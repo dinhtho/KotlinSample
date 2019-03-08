@@ -1,13 +1,13 @@
-package com.mvp.moviedbapi.presenters
+package com.mvp.moviedbapi.main
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.View
 import com.mvp.moviedbapi.R
+import com.mvp.moviedbapi.base.BasePresenter
 import com.mvp.moviedbapi.constants.Urls
-import com.mvp.moviedbapi.interfaces.MainActivityContract.MainActivityView
-import com.mvp.moviedbapi.interfaces.MainActivityContract.Presenter
-import com.mvp.moviedbapi.models.apis.SearchResults
-import com.mvp.moviedbapi.models.managers.HttpManager
+import com.mvp.moviedbapi.models.response.SearchResults
+import com.mvp.moviedbapi.network.HttpManager
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -16,7 +16,7 @@ import rx.schedulers.Schedulers
  * Created by olivier.goutay on 4/28/17.
  */
 
-class MainActivityPresenter : Presenter {
+class MainActivityPresenter : BasePresenter<MainActivityView> {
 
     val TAG = "MainActivityPresenter"
 
@@ -34,14 +34,16 @@ class MainActivityPresenter : Presenter {
         this.mView = null
     }
 
-    override fun searchMovie(text: String, page: Int) {
-        if (text.isEmpty() && mView != null) {
+    fun searchMovie(text: String, page: Int) {
+        mView?.showLoading()
+        if (text.isEmpty()) {
             mView?.showToast(R.string.search_error_no_text)
         }
 
-        val results = HttpManager.instance.movieSearchService.getMovies(Urls.MOVIEDB_API_KEY_VALUE, text, page)
-        results.subscribeOn(Schedulers.io())
+        HttpManager.instance.movieSearchService.getMovies(Urls.MOVIEDB_API_KEY_VALUE, text, page)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnTerminate({ mView?.hideLoading() })
                 .subscribe(object : Subscriber<SearchResults>() {
                     override fun onCompleted() {
                         Log.e(TAG, "onCompleted")

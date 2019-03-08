@@ -1,4 +1,4 @@
-package com.mvp.moviedbapi.interfaces
+package com.mvp.moviedbapi.base
 
 /**
  * Created by olivier.goutay on 4/28/17.

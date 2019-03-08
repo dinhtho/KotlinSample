@@ -1,7 +1,7 @@
-package com.mvp.moviedbapi.network
+package com.mvp.moviedbapi.network.service
 
 import com.mvp.moviedbapi.constants.Urls
-import com.mvp.moviedbapi.models.apis.SearchResults
+import com.mvp.moviedbapi.models.response.SearchResults
 import retrofit2.http.GET
 import retrofit2.http.Query
 import rx.Observable

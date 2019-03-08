@@ -4,12 +4,12 @@ import android.support.test.runner.AndroidJUnit4
 import android.view.View
 import com.mvp.moviedbapi.base.AbstractTest
 import com.mvp.moviedbapi.constants.Urls
-import com.mvp.moviedbapi.interfaces.MainActivityContract
-import com.mvp.moviedbapi.models.apis.MovieResult
-import com.mvp.moviedbapi.models.apis.SearchResults
-import com.mvp.moviedbapi.models.managers.HttpManager
-import com.mvp.moviedbapi.network.MovieSearchService
-import com.mvp.moviedbapi.presenters.MainActivityPresenter
+import com.mvp.moviedbapi.models.response.MovieResult
+import com.mvp.moviedbapi.models.response.SearchResults
+import com.mvp.moviedbapi.network.HttpManager
+import com.mvp.moviedbapi.network.service.MovieSearchService
+import com.mvp.moviedbapi.main.MainActivityPresenter
+import com.mvp.moviedbapi.main.MainActivityView
 import com.nhaarman.mockito_kotlin.*
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertNull
@@ -51,7 +51,7 @@ class MainActivityPresenterTest : AbstractTest() {
     @Test
     fun testSearchMovie() {
         val mainActivityPresenter = MainActivityPresenter()
-        val mainActivityView = mock<MainActivityContract.MainActivityView>()
+        val mainActivityView = mock<MainActivityView>()
 
         //Test null view is not crashing at least
         mainActivityPresenter.searchMovie("", 1)

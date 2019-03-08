@@ -1,4 +1,4 @@
-package com.mvp.moviedbapi.models.apis
+package com.mvp.moviedbapi.models.response
 
 import com.google.gson.annotations.SerializedName
 

@@ -9,7 +9,7 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.mvp.moviedbapi.activities.MainActivity
+import com.mvp.moviedbapi.main.MainActivity
 import com.mvp.moviedbapi.base.AbstractTest
 import com.mvp.moviedbapi.base.Condition
 import junit.framework.Assert.assertNotNull

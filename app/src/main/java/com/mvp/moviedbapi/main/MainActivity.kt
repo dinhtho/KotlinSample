@@ -1,27 +1,23 @@
-package com.mvp.moviedbapi.activities
+package com.mvp.moviedbapi.main
 
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.Toast
 import com.mvp.moviedbapi.R
 import com.mvp.moviedbapi.adapters.MovieSearchAdapter
-import com.mvp.moviedbapi.interfaces.MainActivityContract
-import com.mvp.moviedbapi.models.apis.SearchResults
-import com.mvp.moviedbapi.presenters.MainActivityPresenter
+import com.mvp.moviedbapi.models.response.SearchResults
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * The main [android.app.Activity]
  * Improvements:
  */
-class MainActivity : AppCompatActivity(), MainActivityContract.MainActivityView {
+class MainActivity : AppCompatActivity(), MainActivityView {
 
-    /**
-     * The [MainActivityPresenter] for this view
-     */
     private var mPresenter = MainActivityPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +50,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.MainActivityView 
         if (recyclerView.adapter is MovieSearchAdapter) {
             //Already an adapter, just needs to update
             val movieSearchAdapter = recyclerView.adapter as MovieSearchAdapter
-            movieSearchAdapter.setSearchResults(searchResults)
+            movieSearchAdapter.mSearchResults = searchResults
             movieSearchAdapter.notifyDataSetChanged()
         } else {
             //Create a new adapter
@@ -65,5 +61,13 @@ class MainActivity : AppCompatActivity(), MainActivityContract.MainActivityView 
     override fun setUpOnNextPageButton(text: String, visibility: Int, page: Int) {
         nextButton.visibility = visibility
         nextButton.setOnClickListener { mPresenter.searchMovie(text, page) }
+    }
+
+    override fun showLoading() {
+        progressBar.visibility = View.VISIBLE;
+    }
+
+    override fun hideLoading() {
+        progressBar.visibility = View.GONE;
     }
 }

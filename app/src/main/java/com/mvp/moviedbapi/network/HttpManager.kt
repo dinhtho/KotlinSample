@@ -1,13 +1,11 @@
-package com.mvp.moviedbapi.models.managers
+package com.mvp.moviedbapi.network
 
 import com.mvp.moviedbapi.constants.Urls
-import com.mvp.moviedbapi.network.MovieSearchService
+import com.mvp.moviedbapi.network.service.MovieSearchService
 
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-
-import com.mvp.moviedbapi.constants.Urls.MOVIEDB_BASE_URL
 
 /**
  * Created by olivier.goutay on 4/28/17.
