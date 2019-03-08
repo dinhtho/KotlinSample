@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Toast
 import com.mvp.moviedbapi.R
-import com.mvp.moviedbapi.adapters.MovieSearchAdapter
 import com.mvp.moviedbapi.models.response.SearchResults
 import kotlinx.android.synthetic.main.activity_main.*
 

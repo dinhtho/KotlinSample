@@ -1,4 +1,4 @@
-package com.mvp.moviedbapi.adapters
+package com.mvp.moviedbapi.main
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
