@@ -1,13 +1,12 @@
 package com.mvp.moviedbapi.main
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.View
 import com.mvp.moviedbapi.R
 import com.mvp.moviedbapi.base.BasePresenter
 import com.mvp.moviedbapi.constants.Urls
 import com.mvp.moviedbapi.models.response.SearchResults
-import com.mvp.moviedbapi.network.HttpManager
+import com.mvp.moviedbapi.network.service.movie.MovieServiceBuilder
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -40,10 +39,10 @@ class MainActivityPresenter : BasePresenter<MainActivityView> {
             mView?.showToast(R.string.search_error_no_text)
         }
 
-        HttpManager.instance.movieSearchService.getMovies(Urls.MOVIEDB_API_KEY_VALUE, text, page)
+        MovieServiceBuilder().getMovies(Urls.MOVIEDB_API_KEY_VALUE, text, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnTerminate({ mView?.hideLoading() })
+                .doOnTerminate { mView?.hideLoading() }
                 .subscribe(object : Subscriber<SearchResults>() {
                     override fun onCompleted() {
                         Log.e(TAG, "onCompleted")

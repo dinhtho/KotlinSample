@@ -6,8 +6,8 @@ import com.mvp.moviedbapi.base.AbstractTest
 import com.mvp.moviedbapi.constants.Urls
 import com.mvp.moviedbapi.models.response.MovieResult
 import com.mvp.moviedbapi.models.response.SearchResults
-import com.mvp.moviedbapi.network.HttpManager
-import com.mvp.moviedbapi.network.service.MovieSearchService
+import com.mvp.moviedbapi.network.NetworkProvider
+import com.mvp.moviedbapi.network.service.movie.RestMovieSearchService
 import com.mvp.moviedbapi.main.MainActivityPresenter
 import com.mvp.moviedbapi.main.MainActivityView
 import com.nhaarman.mockito_kotlin.*
@@ -62,20 +62,20 @@ class MainActivityPresenterTest : AbstractTest() {
         verify(mainActivityView).showToast(R.string.search_error_no_text)
 
         //Test error response
-        var movieSearchService = mock<MovieSearchService> {
+        var movieSearchService = mock<RestMovieSearchService> {
             on { getMovies(anyString(), anyString(), anyInt()) } doReturn Observable.error<SearchResults>(IOException())
         }
-        HttpManager.instance.movieSearchService = movieSearchService
+        NetworkProvider.instance.movieSearchService = movieSearchService
         mainActivityPresenter.searchMovie(SEARCH, 1)
         waitFor(50)
         verify(mainActivityView, atLeastOnce()).showToast(R.string.search_error_text)
 
         //Test ok response
         val searchResults = fakeSearchResults
-        movieSearchService = mock<MovieSearchService> {
+        movieSearchService = mock<RestMovieSearchService> {
             on { getMovies(anyString(), anyString(), anyInt()) } doReturn Observable.just(searchResults)
         }
-        HttpManager.instance.movieSearchService = movieSearchService
+        NetworkProvider.instance.movieSearchService = movieSearchService
         mainActivityPresenter.searchMovie(SEARCH, 1)
         waitFor(100)
 
