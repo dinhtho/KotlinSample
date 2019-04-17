@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
 
     override fun setUpOnNextPageButton(text: String, visibility: Int, page: Int) {
         nextButton.visibility = visibility
-        nextButton.setOnClickListener { mPresenter.searchMovie(text, page) }
+        nextButton.setOnClickListener { mPresenter.searchMovieCoroutine(text, page) }
     }
 
     override fun showLoading() {
@@ -69,4 +69,6 @@ class MainActivity : AppCompatActivity(), MainActivityView {
     override fun hideLoading() {
         progressBar.visibility = View.GONE;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.mvp.moviedbapi.network
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -68,6 +69,16 @@ private constructor() {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
+                .baseUrl(baseUrl)
+                .build()
+        return retrofit.create(apiClass)
+    }
+
+    fun <T> provideApiCoroutine(baseUrl: String, apiClass: Class<T>): T {
+        val retrofit = Retrofit.Builder()
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(provideDefaultOkHttpClient())
                 .baseUrl(baseUrl)
                 .build()
         return retrofit.create(apiClass)

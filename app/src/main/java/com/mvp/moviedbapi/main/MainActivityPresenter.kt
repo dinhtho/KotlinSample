@@ -7,6 +7,9 @@ import com.mvp.moviedbapi.base.BasePresenter
 import com.mvp.moviedbapi.constants.Urls
 import com.mvp.moviedbapi.models.response.SearchResults
 import com.mvp.moviedbapi.network.service.movie.MovieServiceBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -39,6 +42,7 @@ class MainActivityPresenter : BasePresenter<MainActivityView> {
             mView?.showToast(R.string.search_error_no_text)
         }
 
+
         MovieServiceBuilder().getMovies(Urls.MOVIEDB_API_KEY_VALUE, text, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -61,4 +65,24 @@ class MainActivityPresenter : BasePresenter<MainActivityView> {
                     }
                 })
     }
+
+    fun searchMovieCoroutine(text: String, page: Int) {
+        mView?.showLoading()
+        if (text.isEmpty()) {
+            mView?.showToast(R.string.search_error_no_text)
+        }
+
+        GlobalScope.launch(Dispatchers.Main){
+           val searchResults = MovieServiceBuilder().
+                   getMoviesCoroutine(Urls.MOVIEDB_API_KEY_VALUE, text, page).await()
+           Log.e(TAG, "onNext" + searchResults.results?.get(0)?.originalTitle)
+           mView?.hideLoading()
+           mView?.updateMovieAdapter(searchResults)
+           val nextButtonGone = searchResults.totalPages!! < 2 || searchResults.page == searchResults.totalPages
+           mView?.setUpOnNextPageButton(text, if (nextButtonGone) View.GONE else View.VISIBLE, searchResults.page!! + 1)
+       }
+    }
+
+
+
 }
